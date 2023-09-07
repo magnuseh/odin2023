@@ -16,6 +16,7 @@ https://developer.yr.no/doc/GettingStarted/
     * Ingen persistering/permanent lagring
 * API-endepunkter:
     * /health (GET)
+        * Ping yr.no og returner OK hvis svar
     * /locations (GET/POST)
         * Se nedenfor
     * /locations/:id (GET/PUT/DELETE)
