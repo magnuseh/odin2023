@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import { getTest } from '../controllers/test'
+import { getWeather } from '../controllers/weather'
 
 const router = Router()
-router.get('/', getTest)
+router.get('/', getWeather)
 
 export default router
