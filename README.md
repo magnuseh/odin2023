@@ -15,7 +15,12 @@ WireMock:
 - 
 
 
-# Installing
-> nvm use node
-> npm install
-> npm 
+# Kom i gang
+1. Installer nødvendige pakker
+```
+npm install
+```
+2. Bygg og start server
+```
+npm run start
+```
