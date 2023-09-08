@@ -7,7 +7,7 @@ Egenskap: Hente værmelding
         Når jeg henter værmelding for "Oslo"
         Så skal applikasjonen returnere statuskode "200 OK"
     
-    Scenario: Hente værmelding for en ikke-definert lokasjon
+    Scenario: Hente værmelding for en ikke-registrert lokasjon
         Gitt at jeg ikke har registrert en lokasjon ved navn "Langtvekkistan"
         Når jeg henter værmelding for "Langtvekkistan"
         Så skal applikasjonen returnere statuskode "404 Not Found"

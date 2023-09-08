@@ -13,25 +13,27 @@ Given('at applikasjonen kjører', () => {
 })
 
 Given('at Yr returnerer status OK', function () {
-    return true
+    return 'pending'
 });
 
 Given('at Yr ikke returnerer status OK', function () {
-    return true
+    return 'pending'
 });
 
-When('jeg kaller helsesjekk for applikasjonen', async () => {
-    healthStatus = (await getHealth()).body
+When('jeg kaller helsesjekk for applikasjonen', async function () {
+    this.healthStatus = (await getHealth()).body as HealthStatus
 })
 
-When('jeg kaller helsesjekk for Yr', async () => {
-    yrHealthStatus = (await getYrHealth()).body
+When('jeg kaller helsesjekk for Yr', async function () {
+    this.yrHealthStatus = (await getYrHealth()).body as HealthStatus
 })
 
-Then('skal den returnere status for applikasjonen: {string}', (status) => {
-    assert.equal(healthStatus?.status, status)
+Then('skal den returnere status for applikasjonen: {string}', async function (status: string) {
+    let health = this.healthStatus as HealthStatus
+    assert.equal(health.status, status)
 })
 
-Then('skal den returnere status for Yr: {string}', (status) => {
-    assert.equal(yrHealthStatus?.status, status)
+Then('skal den returnere status for Yr: {string}', async function (status: string) {
+    let yrHealth = this.yrHealthStatus as HealthStatus
+    assert.equal(yrHealth.status, status)
 })

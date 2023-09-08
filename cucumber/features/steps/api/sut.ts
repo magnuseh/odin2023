@@ -6,6 +6,13 @@ export interface Response {
     body: any
 }
 
+export interface Coordinates {
+    lat: number,
+    lon: number
+}
+
+export let response: Response | undefined
+
 async function doRequest(url: string, reqParams: RequestInit,
     urlParams: URLSearchParams | undefined = undefined): Promise<Response> {
 
@@ -24,7 +31,7 @@ async function doRequest(url: string, reqParams: RequestInit,
     }
     console.log('Response status:', responseStatus)
     const responseBody = await response.json()
-    console.log('Response body:', JSON.stringify(responseBody, null, 4));
+    //console.log('Response body:', JSON.stringify(responseBody, null, 4));
     console.log('<---')
 
     return { 
@@ -34,12 +41,14 @@ async function doRequest(url: string, reqParams: RequestInit,
     }
 }
 
-export async function addLocation(locationName: string) {
+export async function addLocation(name: string, coordinates: Coordinates) {
     return await doRequest(SUT_BASE_URL + '/locations', {
         method: 'POST',
         headers: {
+            'Content-Type': 'application/json',
             'Accept': 'application/json'
-        }
+        },
+        body: JSON.stringify({ name: name, coordinates: coordinates })
     })
 }
 
