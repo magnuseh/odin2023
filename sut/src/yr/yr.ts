@@ -1,4 +1,3 @@
-import { url } from "inspector"
 import { URLSearchParams } from "url"
 
 const YR_API_BASE_URL = 'https://api.met.no'
@@ -16,37 +15,48 @@ export interface YrLocation {
     lon: number
 }
 
-export interface YrLocationForecast {
-    properties: {
-        timeseries: {
-            data: {
-                instant: {
-                    details: {
-                        air_temperature: number
-                    }
-                }
-                next_1_hours: {
-                    summary: {
-                        symbol_code: string
-                    }
-                }
+export interface YrGeometry {
+    type: 'Point',
+    coordinates: [number, number, number]
+}
+
+export interface YrTimeseriesData {
+    time: Date,
+    data: {
+        instant: {
+            details: {
+                air_temperature: number
+            }
+        }
+        next_1_hours: {
+            summary: {
+                symbol_code: string
             }
         }
     }
 }
 
+export interface YrLocationForecast {
+    geometry: YrGeometry
+    properties: {
+        timeseries: YrTimeseriesData[]
+    }
+}
+
 export class SimpleWeatherStatus {
+    location: YrLocation
     temperature: 'WARM' | 'COLD'
     sky: 'SUNNY' | 'NOT SUNNY'
     constructor(forecast: YrLocationForecast) {
-        const yrTemperature = forecast.properties.timeseries.data.instant.details.air_temperature
+        this.location = { lat: forecast.geometry.coordinates[1], lon: forecast.geometry.coordinates[0] }
+        const yrTemperature = forecast.properties.timeseries[0].data.instant.details.air_temperature
         this.temperature = yrTemperature >= 15 ? 'WARM' : 'COLD'
 
-        const yrSymbolCode =  forecast.properties.timeseries.data.next_1_hours.summary.symbol_code
+        const yrSymbolCode =  forecast.properties.timeseries[0].data.next_1_hours.summary.symbol_code
         this.sky = (yrSymbolCode in ['clearsky_day', 'fair_day']) ? 'SUNNY' : 'NOT SUNNY'
     }
 
-    toString(): string {
+    get weather(): string {
         if (this.temperature == 'WARM' && this.sky == 'SUNNY') {
             return 'GOOD'
         }
@@ -59,44 +69,49 @@ export class SimpleWeatherStatus {
     }
 }
 
-export async function getStatus() {
-    const response = await fetch(YR_API_BASE_URL + YR_API_STATUS_PATH, {
-        method: 'GET',
-        headers: {
-            'User-Agent': sitename,
-            'Accept': 'application/json',
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
+async function doRequest(url: string, reqParams: RequestInit, urlParams: URLSearchParams | undefined = undefined) {
+    let reqUrl = url
+    if (urlParams != undefined) {
+        reqUrl += '?'+ urlParams
     }
-
-    const result: YrStatus = (await response.json())
-
-    console.log('yr.getStatus(): ', JSON.stringify(result, null, 4));
-    return result;
-  }
-
-export async function getLocationForecast(location: YrLocation) {
-    const urlParams = new URLSearchParams({ lat: `${location.lat}`, lon: `${location.lon}` })
-    const reqUrl = YR_API_BASE_URL + YR_API_FORECAST_PATH + '?' + urlParams
-    const reqParams = {
-        method: 'GET',
-        headers: {
-            'User-Agent': sitename,
-            'Accept': 'application/json',
-        }
-    }
-    console.log(reqUrl)
-    console.log(reqParams)
+    console.log('Request to Yr --->')
+    console.log('Request URL:', reqUrl)
+    console.log('Request parameters:', reqParams)
     const response = await fetch(reqUrl, reqParams);
+    const responseStatus = response.status + ' ' + response.statusText
 
     if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
+        throw new Error('Error! Status: ' + responseStatus);
     }
+    console.log('Response status:', responseStatus)
+    const responseBody = await response.json()
+    //console.log('Response body:', JSON.stringify(responseBody, null, 4));
+    console.log('<---')
 
-    const result: YrLocationForecast = (await response.json())
-    console.log('yr.getLocationForecast(): ', JSON.stringify(result, null, 4));
-    return result;
+    return responseBody
+}
+
+export async function getStatus(): Promise<YrStatus> {
+    return await doRequest(YR_API_BASE_URL + YR_API_STATUS_PATH, {
+            method: 'GET',
+            headers: {
+                'User-Agent': sitename,
+                'Accept': 'application/json',
+            },
+        }
+    )
+}
+
+export async function getLocationForecast(location: YrLocation): Promise<YrLocationForecast> {
+    return await doRequest(
+        YR_API_BASE_URL + YR_API_FORECAST_PATH,
+        {
+            method: 'GET',
+            headers: {
+            'User-Agent': sitename,
+            'Accept': 'application/json',
+            },
+        },
+        new URLSearchParams({ lat: `${location.lat}`, lon: `${location.lon}` })
+    )
 }
