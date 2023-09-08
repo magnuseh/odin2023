@@ -1,2 +1,3 @@
+cucumber/**/*.js
 **/node_modules
 **/dist
