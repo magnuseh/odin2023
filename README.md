@@ -8,21 +8,20 @@ https://developer.yr.no/doc/GettingStarted/
 
 ## System under test (SUT)
 
-* Applikasjonsserver med HTTP REST-grensesnitt (TypeScript og NodeJS)
+* Applikasjonsserver med HTTP REST-grensesnitt (TypeScript, NodeJS, Express)
 * Overordnet funksjonalitet:
-    * Hente dagens værmelding fra yr for navngitte lokasjoner
+    * Hente værmelding fra yr.no (met.no) for en navngitt lokasjon
     * Legge til og fjerne lokasjoner
-    * Hente værmelding for en navngitt lokasjon
     * Ingen persistering/permanent lagring
 * API-endepunkter:
-    * /health (GET)
-        * Ping yr.no og returner OK hvis svar
-    * /locations (GET/POST)
-        * Se nedenfor
-    * /locations/:id (GET/PUT/DELETE)
-        * `{ name: string, lat: float, lon: float }`
-    * /weather/:locationId (GET)
-        * Returnerer JSON-respons fra yr.no for lokasjon med lagrede koordinater
+    * `GET /health` - Returner status OK så lenge applikasjonen er oppe
+    * `GET /health/yr` - Hent status fra yr.no og returner OK hvis svar
+    * `GET /locations` - List ut registrerte lokasjoner
+    * `POST /locations` - Legg til en ny lokasjon
+        * Format: `{ name: string, coordinates: { lat: float, lon: float } }`
+    * `GET /locations/:name` - Hent en registrert lokasjon
+    * `DELETE /locations/:name` - Slett en registrert lokasjon
+    * `GET /weather/:locationName` - Hent en enkel værmelding for en registrert lokasjon
 
 ## Cucumber-tester
 * Legg til ugyldig posisjon

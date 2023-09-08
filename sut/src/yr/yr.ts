@@ -1,4 +1,5 @@
 import { URLSearchParams } from "url"
+import { Coordinates } from "../models/location"
 
 const YR_API_BASE_URL = 'https://api.met.no'
 const YR_API_STATUS_PATH = '/weatherapi/locationforecast/2.0/status'
@@ -8,11 +9,6 @@ const sitename = 'https://github.com/magnuseh/'
 
 export interface YrStatus {
     last_update: Date
-}
-
-export interface YrLocation {
-    lat: number
-    lon: number
 }
 
 export interface YrGeometry {
@@ -43,35 +39,9 @@ export interface YrLocationForecast {
     }
 }
 
-export class SimpleWeatherStatus {
-    location: YrLocation
-    temperature: 'WARM' | 'COLD'
-    sky: 'SUNNY' | 'NOT SUNNY'
-    constructor(forecast: YrLocationForecast) {
-        this.location = { lat: forecast.geometry.coordinates[1], lon: forecast.geometry.coordinates[0] }
-        const yrTemperature = forecast.properties.timeseries[0].data.instant.details.air_temperature
-        this.temperature = yrTemperature >= 15 ? 'WARM' : 'COLD'
-
-        const yrSymbolCode =  forecast.properties.timeseries[0].data.next_1_hours.summary.symbol_code
-        this.sky = (yrSymbolCode in ['clearsky_day', 'fair_day']) ? 'SUNNY' : 'NOT SUNNY'
-    }
-
-    get weather(): string {
-        if (this.temperature == 'WARM' && this.sky == 'SUNNY') {
-            return 'GOOD'
-        }
-        else if(this.temperature == 'COLD' && this.sky == 'NOT SUNNY') {
-            return 'BAD'
-        }
-        else {
-            return 'OK'
-        }
-    }
-}
-
 async function doRequest(url: string, reqParams: RequestInit, urlParams: URLSearchParams | undefined = undefined) {
     let reqUrl = url
-    if (urlParams != undefined) {
+    if (urlParams !== undefined) {
         reqUrl += '?'+ urlParams
     }
     console.log('Request to Yr --->')
@@ -102,7 +72,7 @@ export async function getStatus(): Promise<YrStatus> {
     )
 }
 
-export async function getLocationForecast(location: YrLocation): Promise<YrLocationForecast> {
+export async function getLocationForecast(coordinates: Coordinates): Promise<YrLocationForecast> {
     return await doRequest(
         YR_API_BASE_URL + YR_API_FORECAST_PATH,
         {
@@ -112,6 +82,6 @@ export async function getLocationForecast(location: YrLocation): Promise<YrLocat
             'Accept': 'application/json',
             },
         },
-        new URLSearchParams({ lat: `${location.lat}`, lon: `${location.lon}` })
+        new URLSearchParams({ lat: `${coordinates.lat}`, lon: `${coordinates.lon}` })
     )
 }
