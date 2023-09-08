@@ -21,11 +21,11 @@ Given('at Yr ikke returnerer status OK', function () {
 });
 
 When('jeg kaller helsesjekk for applikasjonen', async () => {
-    healthStatus = await getHealth()
+    healthStatus = (await getHealth()).body
 })
 
 When('jeg kaller helsesjekk for Yr', async () => {
-    yrHealthStatus = await getYrHealth()
+    yrHealthStatus = (await getYrHealth()).body
 })
 
 Then('skal den returnere status for applikasjonen: {string}', (status) => {
