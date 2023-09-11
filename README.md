@@ -33,6 +33,7 @@ https://developer.yr.no/doc/GettingStarted/
 ## WireMock
 * Mocke korrekt respons fra yr.no
 * Mocke feilrespons fra yr.no
+* HTTPS -- må håndtere self-signed sertifikat..
 
 
 # Kom i gang

@@ -1,7 +1,8 @@
 import { URLSearchParams } from "url"
 import { Coordinates } from "../models/location"
 
-const YR_API_BASE_URL = 'https://api.met.no'
+//const YR_API_BASE_URL = 'https://api.met.no'
+const YR_API_BASE_URL = 'https://localhost:8443'
 const YR_API_STATUS_PATH = '/weatherapi/locationforecast/2.0/status'
 const YR_API_FORECAST_PATH = '/weatherapi/locationforecast/2.0/compact'
 
@@ -51,11 +52,11 @@ async function doRequest(url: string, reqParams: RequestInit, urlParams: URLSear
     const responseStatus = response.status + ' ' + response.statusText
 
     if (!response.ok) {
-        throw new Error('Error! Status: ' + responseStatus);
+        throw new Error('Error! Status: ' + responseStatus)
     }
     console.log('Response status:', responseStatus)
     const responseBody = await response.json()
-    //console.log('Response body:', JSON.stringify(responseBody, null, 4));
+    console.log('Response body:', JSON.stringify(responseBody, null, 4))
     console.log('<---')
 
     return responseBody

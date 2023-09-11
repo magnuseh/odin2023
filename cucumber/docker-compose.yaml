@@ -1,0 +1,8 @@
+version: "3"
+services:
+  wiremock:
+    image: "wiremock/wiremock:latest"
+    container_name: my_wiremock
+    ports:
+      - "8443:443"
+    entrypoint: ["/docker-entrypoint.sh", "--https-port", "443", "--global-response-templating", "--disable-gzip", "--verbose"]

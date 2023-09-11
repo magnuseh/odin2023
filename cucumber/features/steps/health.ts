@@ -1,4 +1,5 @@
-import { Given, When, Then } from "@cucumber/cucumber"
+import { Given, When, Then, AfterAll } from "@cucumber/cucumber"
+import { WireMockAPI } from 'wiremock-captain';
 import { getHealth, getYrHealth } from "./api/sut"
 import { assert } from "chai"
 
@@ -7,33 +8,46 @@ interface HealthStatus {
 }
 let healthStatus: HealthStatus | undefined = undefined
 let yrHealthStatus: HealthStatus | undefined = undefined
+let wiremock: WireMockAPI | undefined
+
+AfterAll(() => {
+    wiremock?.clearAllExceptDefault()
+})
 
 Given('at applikasjonen kjører', () => {
     return true
 })
 
-Given('at Yr returnerer status OK', function () {
-    return 'pending'
+Given('at Yr returnerer status OK', function () {  
+    wiremock = new WireMockAPI('https://localhost:8443', '/weatherapi/locationforecast/2.0/status', 'GET')
+    wiremock.register(
+        {},
+        { status: 200, body: { "last_update": "2023-09-11T20:43:10Z" } }
+    )
 });
 
 Given('at Yr ikke returnerer status OK', function () {
-    return 'pending'
+    wiremock = new WireMockAPI('https://localhost:8443', '/weatherapi/locationforecast/2.0/status', 'GET')
+    wiremock.register(
+        {},
+        { status: 500 }
+    )
 });
 
 When('jeg kaller helsesjekk for applikasjonen', async function () {
-    this.healthStatus = (await getHealth()).body as HealthStatus
+    this.response = await getHealth()
 })
 
 When('jeg kaller helsesjekk for Yr', async function () {
-    this.yrHealthStatus = (await getYrHealth()).body as HealthStatus
+    this.response = await getYrHealth()
 })
 
 Then('skal den returnere status for applikasjonen: {string}', async function (status: string) {
-    let health = this.healthStatus as HealthStatus
+    let health = this.response.body as HealthStatus
     assert.equal(health.status, status)
 })
 
 Then('skal den returnere status for Yr: {string}', async function (status: string) {
-    let yrHealth = this.yrHealthStatus as HealthStatus
+    let yrHealth = this.response.body as HealthStatus
     assert.equal(yrHealth.status, status)
 })
