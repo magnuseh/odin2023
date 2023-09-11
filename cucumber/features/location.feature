@@ -20,7 +20,7 @@ Egenskap: Hente, legge til og slette lokasjon
 
 
     Scenario: Legge til en allerede registrert lokasjon
-        Gitt at jeg har registrert en lokasjon ved navn "Oslo"
+        Gitt at jeg allerede har registrert en lokasjon ved navn "Oslo"
         Når jeg registrerer enda en lokasjon ved navn "Oslo"
         Så skal applikasjonen returnere statuskode "403 Conflict"
 

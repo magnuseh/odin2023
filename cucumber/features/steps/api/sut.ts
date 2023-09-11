@@ -26,12 +26,15 @@ async function doRequest(url: string, reqParams: RequestInit,
     const response = await fetch(reqUrl, reqParams);
     const responseStatus = response.status + ' ' + response.statusText
 
-    if (!response.ok) {
-        throw new Error('Error! Status: ' + responseStatus);
-    }
     console.log('Response status:', responseStatus)
-    const responseBody = await response.json()
-    //console.log('Response body:', JSON.stringify(responseBody, null, 4));
+    let responseBody = undefined
+    try {
+        responseBody = await response.json()
+        //console.log('Response body:', JSON.stringify(responseBody, null, 4));
+    }
+    catch(e) {
+        console.log('Response body:', e)
+    }
     console.log('<---')
 
     return { 

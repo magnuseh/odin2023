@@ -33,6 +33,9 @@ export function addLocation(name: string, coordinates: Coordinates): Location | 
     if (coordinates === undefined) {
         throw new Error("Missing property: 'coordinates'")
     }
+    if (getLocationByName(name)) {
+        throw new Error(`Conflict: Location '${name}' is already registered`)
+    }
     const newLocation = new Location(name, coordinates)
     locations.set(newLocation.name, newLocation)
     return newLocation
