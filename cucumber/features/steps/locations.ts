@@ -24,7 +24,6 @@ Given('at jeg ikke har registrert en lokasjon ved navn {string}', async function
     return true
 });
 
-
 When('jeg henter informasjon om lokasjon {string}', async function (navn: string) {
     this.response = await getLocation(navn) as Response
     this.location = this.response.body as Location
