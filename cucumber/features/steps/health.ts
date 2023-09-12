@@ -24,7 +24,7 @@ Given('at Yr returnerer status OK', function () {
         {},
         { status: 200, body: { "last_update": "2023-09-11T20:43:10Z" } }
     )
-});
+})
 
 Given('at Yr ikke returnerer status OK', function () {
     wiremock = new WireMockAPI('https://localhost:8443', '/weatherapi/locationforecast/2.0/status', 'GET')
@@ -32,7 +32,7 @@ Given('at Yr ikke returnerer status OK', function () {
         {},
         { status: 500 }
     )
-});
+})
 
 When('jeg kaller helsesjekk for applikasjonen', async function () {
     this.response = await getHealth()

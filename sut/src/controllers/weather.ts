@@ -8,13 +8,13 @@ export const getWeather: RequestHandler = (req, res, next) => {
 
     const locationName = req.params.locationName as string
     if (typeof(req.params.locationName) !== 'string') {
-        res.status(400).send({ message: `Unable to parse parameter 'locationName'` })
+        res.status(400).json({ message: `Unable to parse parameter 'locationName'` })
         return
     }
 
     const location = getLocationByName(locationName)
     if (location === undefined) {
-        res.status(404).send({ message: `Unknown location: '${locationName}'` })
+        res.status(404).json({ message: `Unknown location: '${locationName}'` })
         return
     }
 
@@ -27,7 +27,8 @@ export const getWeather: RequestHandler = (req, res, next) => {
             sky: yrWeatherStatus.sky,
             summary: yrWeatherStatus.summary
         })
-    }).catch((error: Error) =>
-        res.json({ error: error.message })
-    )
+    }).catch((error: Error) => {
+        console.log(error)
+        res.status(500).json({ error: error.message })
+    })
 }

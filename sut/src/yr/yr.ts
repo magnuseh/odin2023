@@ -13,12 +13,10 @@ export interface YrStatus {
 }
 
 export interface YrGeometry {
-    type: 'Point',
     coordinates: [number, number, number]
 }
 
 export interface YrTimeseriesData {
-    time: Date,
     data: {
         instant: {
             details: {
