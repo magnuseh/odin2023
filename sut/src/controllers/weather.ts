@@ -1,5 +1,5 @@
 import { RequestHandler } from "express"
-import { getLocationForecast } from "../yr/yr"
+import { getLocationForecast } from "../weatherapi/weatherapi"
 import { UUID } from "crypto"
 import { getLocationByName } from "../models/location"
 import { SimpleWeatherStatus } from "../models/weather"

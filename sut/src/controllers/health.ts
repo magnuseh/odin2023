@@ -1,5 +1,5 @@
 import { json, RequestHandler } from "express"
-import { getStatus as getYrStatus, YrStatus } from "../yr/yr"
+import { getStatus as getYrStatus, WeatherApiStatus } from "../weatherapi/weatherapi"
 
 export const getHealth: RequestHandler = (req, res, next) => {
     res.json({ status: "I'm OK" })

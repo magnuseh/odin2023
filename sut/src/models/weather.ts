@@ -1,11 +1,11 @@
-import { YrLocationForecast } from "../yr/yr"
+import { WeatherApiLocationForecast } from "../weatherapi/weatherapi"
 import { Coordinates } from "./location"
 
 export class SimpleWeatherStatus {
     coordinates: Coordinates
     temperature: 'WARM' | 'COLD'
     sky: 'SUNNY' | 'NOT SUNNY'
-    constructor(forecast: YrLocationForecast) {
+    constructor(forecast: WeatherApiLocationForecast) {
         this.coordinates = { lon: forecast.geometry.coordinates[0], lat: forecast.geometry.coordinates[1] }
         const yrTemperature = forecast.properties.timeseries[0].data.instant.details.air_temperature
         this.temperature = yrTemperature >= 20 ? 'WARM' : 'COLD'

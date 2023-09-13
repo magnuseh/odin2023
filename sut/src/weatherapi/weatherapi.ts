@@ -1,22 +1,20 @@
 import { URLSearchParams } from "url"
 import { Coordinates } from "../models/location"
 
-//const YR_API_BASE_URL = 'https://api.met.no'
-const YR_API_BASE_URL = 'https://localhost:8443'
-const YR_API_STATUS_PATH = '/weatherapi/locationforecast/2.0/status'
-const YR_API_FORECAST_PATH = '/weatherapi/locationforecast/2.0/compact'
+const WEATHER_API_BASE_URL = process.env.WEATHER_API_BASE_URL || 'https://api.met.no'
+const WEATHER_API_STATUS_PATH = '/weatherapi/locationforecast/2.0/status'
+const WEATHER_API_FORECAST_PATH = '/weatherapi/locationforecast/2.0/compact'
+const WEATHER_API_USERAGENT = 'https://github.com/magnuseh/'
 
-const sitename = 'https://github.com/magnuseh/'
-
-export interface YrStatus {
+export interface WeatherApiStatus {
     last_update: Date
 }
 
-export interface YrGeometry {
+export interface WeatherApiGeometry {
     coordinates: [number, number, number]
 }
 
-export interface YrTimeseriesData {
+export interface WeatherApiTimeseriesData {
     data: {
         instant: {
             details: {
@@ -31,10 +29,10 @@ export interface YrTimeseriesData {
     }
 }
 
-export interface YrLocationForecast {
-    geometry: YrGeometry
+export interface WeatherApiLocationForecast {
+    geometry: WeatherApiGeometry
     properties: {
-        timeseries: YrTimeseriesData[]
+        timeseries: WeatherApiTimeseriesData[]
     }
 }
 
@@ -43,7 +41,7 @@ async function doRequest(url: string, reqParams: RequestInit, urlParams: URLSear
     if (urlParams !== undefined) {
         reqUrl += '?'+ urlParams
     }
-    console.log('Request to Yr --->')
+    console.log('Request to Weather API --->')
     console.log('Request URL:', reqUrl)
     console.log('Request parameters:', reqParams)
     const response = await fetch(reqUrl, reqParams);
@@ -60,25 +58,25 @@ async function doRequest(url: string, reqParams: RequestInit, urlParams: URLSear
     return responseBody
 }
 
-export async function getStatus(): Promise<YrStatus> {
-    return await doRequest(YR_API_BASE_URL + YR_API_STATUS_PATH, {
+export async function getStatus(): Promise<WeatherApiStatus> {
+    return await doRequest(WEATHER_API_BASE_URL + WEATHER_API_STATUS_PATH, {
             method: 'GET',
             headers: new Headers({
                 'Accept'       : 'application/json',
-                'User-Agent'   : sitename
+                'User-Agent'   : WEATHER_API_USERAGENT
             })
         }
     )
 }
 
-export async function getLocationForecast(coordinates: Coordinates): Promise<YrLocationForecast> {
+export async function getLocationForecast(coordinates: Coordinates): Promise<WeatherApiLocationForecast> {
     return await doRequest(
-        YR_API_BASE_URL + YR_API_FORECAST_PATH,
+        WEATHER_API_BASE_URL + WEATHER_API_FORECAST_PATH,
         {
             method: 'GET',
             headers: new Headers({
                 'Accept'       : 'application/json',
-                'User-Agent'   : sitename
+                'User-Agent'   : WEATHER_API_USERAGENT
             })
         },
         new URLSearchParams({ lat: `${coordinates.lat}`, lon: `${coordinates.lon}` })

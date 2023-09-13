@@ -3,6 +3,8 @@ import { WireMockAPI } from 'wiremock-captain';
 import { getWeather, Response } from "./api/sut"
 import { assert } from "chai"
 
+const WIREMOCK_BASE_URL = process.env.WIREMOCK_BASE_URL || 'https://localhost:8443'
+
 let wiremock: WireMockAPI | undefined
 
 Given('at Yr returnerer OK ved henting av værdata for koordinater {int} {int}', (lat: number, lon: number) => {
@@ -29,7 +31,7 @@ Given('at Yr returnerer OK ved henting av værdata for koordinater {int} {int}',
         }
     }
 
-    wiremock = new WireMockAPI('https://localhost:8443', `/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`, 'GET')
+    wiremock = new WireMockAPI(WIREMOCK_BASE_URL, `/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`, 'GET')
     wiremock.register(
         {},
         { status: 200, body: mockData }
@@ -37,7 +39,7 @@ Given('at Yr returnerer OK ved henting av værdata for koordinater {int} {int}',
 })
 
 Given('at Yr returnerer en feilkode ved henting av værdata for koordinater {int} {int}', (lat: number, lon: number) => {
-    wiremock = new WireMockAPI('https://localhost:8443', `/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`, 'GET')
+    wiremock = new WireMockAPI(WIREMOCK_BASE_URL, `/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`, 'GET')
     wiremock.register(
         {},
         { status: 500 }

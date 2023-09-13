@@ -3,6 +3,8 @@ import { WireMockAPI } from 'wiremock-captain';
 import { getHealth, getYrHealth } from "./api/sut"
 import { assert } from "chai"
 
+const WIREMOCK_HOST = process.env.WIREMOCK_HOST || 'https://localhost:8443'
+
 interface HealthStatus {
     status: string
 }
@@ -19,7 +21,7 @@ Given('at applikasjonen kjører', () => {
 })
 
 Given('at Yr returnerer status OK', function () {  
-    wiremock = new WireMockAPI('https://localhost:8443', '/weatherapi/locationforecast/2.0/status', 'GET')
+    wiremock = new WireMockAPI(WIREMOCK_HOST, '/weatherapi/locationforecast/2.0/status', 'GET')
     wiremock.register(
         {},
         { status: 200, body: { "last_update": "2023-09-11T20:43:10Z" } }
@@ -27,7 +29,7 @@ Given('at Yr returnerer status OK', function () {
 })
 
 Given('at Yr ikke returnerer status OK', function () {
-    wiremock = new WireMockAPI('https://localhost:8443', '/weatherapi/locationforecast/2.0/status', 'GET')
+    wiremock = new WireMockAPI(WIREMOCK_HOST, '/weatherapi/locationforecast/2.0/status', 'GET')
     wiremock.register(
         {},
         { status: 500 }

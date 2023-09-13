@@ -9,7 +9,8 @@
     "watch:build": "tsc --watch",
     "watch:server": "nodemon './dist/app.js' --watch './dist'",
     "start": "npm-run-all --serial clean build --parallel watch:build watch:server --print-label",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:local": "NODE_TLS_REJECT_UNAUTHORIZED=0 WEATHER_API_BASE_URL=https://localhost:8443 npm-run-all --serial clean build --parallel watch:build watch:server --print-label",
+    "test:cloud": "NODE_TLS_REJECT_UNAUTHORIZED=0 WEATHER_API_BASE_URL=https://odin2023.wiremockapi.cloud npm-run-all --serial clean build --parallel watch:build watch:server --print-label"
   },
   "author": "Magnus E. Halvorsen",
   "license": "ISC",
