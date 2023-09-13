@@ -63,10 +63,10 @@ async function doRequest(url: string, reqParams: RequestInit, urlParams: URLSear
 export async function getStatus(): Promise<YrStatus> {
     return await doRequest(YR_API_BASE_URL + YR_API_STATUS_PATH, {
             method: 'GET',
-            headers: {
-                'User-Agent': sitename,
-                'Accept': 'application/json',
-            },
+            headers: new Headers({
+                'Accept'       : 'application/json',
+                'User-Agent'   : sitename
+            })
         }
     )
 }
@@ -76,10 +76,10 @@ export async function getLocationForecast(coordinates: Coordinates): Promise<YrL
         YR_API_BASE_URL + YR_API_FORECAST_PATH,
         {
             method: 'GET',
-            headers: {
-            'User-Agent': sitename,
-            'Accept': 'application/json',
-            },
+            headers: new Headers({
+                'Accept'       : 'application/json',
+                'User-Agent'   : sitename
+            })
         },
         new URLSearchParams({ lat: `${coordinates.lat}`, lon: `${coordinates.lon}` })
     )
