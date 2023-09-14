@@ -1,13 +1,14 @@
-import { Given, When, Then } from "@cucumber/cucumber"
-import { WireMockAPI } from 'wiremock-captain';
+import { Given, When, Then, After } from "@cucumber/cucumber"
 import { getWeather, Response } from "./api/sut"
 import { assert } from "chai"
+import wiremock from "./util/wiremock";
+import { IWireMockRequest, IWireMockResponse } from "wiremock-captain";
 
-const WIREMOCK_BASE_URL = process.env.WIREMOCK_BASE_URL || 'https://localhost:8443'
+After(async function() {
+    await wiremock.clearAll()
+})
 
-let wiremock: WireMockAPI | undefined
-
-Given('at Yr returnerer OK ved henting av værdata for koordinater {int} {int}', (lat: number, lon: number) => {
+Given('at Yr returnerer OK ved henting av værdata for koordinater {int} {int}', async function (lat: number, lon: number) {
 
     let mockData =  {
         geometry: {
@@ -31,26 +32,22 @@ Given('at Yr returnerer OK ved henting av værdata for koordinater {int} {int}',
         }
     }
 
-    wiremock = new WireMockAPI(WIREMOCK_BASE_URL, `/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`, 'GET')
-    wiremock.register(
-        {},
-        { status: 200, body: mockData }
-    )
+    let mockRequest: IWireMockRequest = { method: 'GET', endpoint: `/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}` }
+    let mockResponse: IWireMockResponse = { status: 200, body: mockData }
+    await wiremock.register(mockRequest, mockResponse)
 })
 
-Given('at Yr returnerer en feilkode ved henting av værdata for koordinater {int} {int}', (lat: number, lon: number) => {
-    wiremock = new WireMockAPI(WIREMOCK_BASE_URL, `/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`, 'GET')
-    wiremock.register(
-        {},
-        { status: 500 }
-    )
+Given('at Yr returnerer en feilkode ved henting av værdata for koordinater {int} {int}', async function (lat: number, lon: number) {
+    let mockRequest: IWireMockRequest = { method: 'GET', endpoint: `/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}` }
+    let mockResponse: IWireMockResponse = { status: 500 }
+    await wiremock.register(mockRequest, mockResponse)
 })
 
 When('jeg henter værmelding for {string}', async function(navn: string) {
     this.response = await getWeather(navn) as Response
 })
 
-Then('skal applikasjonen returnere statuskode {string}', async function(status: string) {
+Then('skal applikasjonen returnere statuskode {string}', function(status: string) {
     let r = this.response as Response
     assert.equal(r.status + ' ' + r.statusText, status)
 })

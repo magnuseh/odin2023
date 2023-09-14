@@ -49,15 +49,15 @@ npm install
 ```
 2. Bygg og start server
 ```
-npm start
+npm run start
 ```
 3. Start server for testing  (WireMock på localhost)
 ```
-npm test:local
+npm run test:local
 ```
 4. Start server for testing (WireMock i sky)
 ```
-npm test:cloud
+npm run test:cloud
 ```
 
 ## Cucumber-tester
@@ -67,7 +67,7 @@ cd cucumber
 ```
 1. Kjør tester (WireMock på localhost)
 ```
-NODE_TLS_REJECT_UNAUTHORIZED=0 WIREMOCK_BASE_URL=https://localhost:8443 npm run cucumber
+NODE_TLS_REJECT_UNAUTHORIZED=0 npm run cucumber
 ```
 2. Kjør tester (WireMock i sky)
 ```
