@@ -65,11 +65,15 @@ npm run test:cloud
 ```
 cd cucumber
 ```
-1. Kjør tester (WireMock på localhost)
+1. Start WireMock via Docker
 ```
-NODE_TLS_REJECT_UNAUTHORIZED=0 npm run cucumber
+docker-compose up -d
 ```
-2. Kjør tester (WireMock i sky)
+2. Kjør tester (WireMock på localhost)
 ```
-NODE_TLS_REJECT_UNAUTHORIZED=0 WIREMOCK_BASE_URL=https://odin2023.wiremockapi.cloud npm run cucumber
+npm run cucumber:local
+```
+3. Kjør tester (WireMock i sky)
+```
+npm run cucumber:cloud
 ```
