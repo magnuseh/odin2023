@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "watch:build": "tsc --watch",
-    "cucumber": "npm run build && cucumber-js"
+    "cucumber:local": "NODE_TLS_REJECT_UNAUTHORIZED=0 cucumber-js",
+    "cucumber:cloud": "NODE_TLS_REJECT_UNAUTHORIZED=0 WIREMOCK_BASE_URL=https://odin2023.wiremockapi.cloud cucumber-js"
   },
   "author": "Magnus E. Halvorsen",
   "license": "ISC",

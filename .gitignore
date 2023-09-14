@@ -1,3 +1,3 @@
-cucumber/**/*.js
+cucumber/cucumber-report.html
 **/node_modules
 **/dist
