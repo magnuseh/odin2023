@@ -55,6 +55,11 @@ nvm use
 ### Docker
 Følg instruksjoner på https://docs.docker.com/desktop/.
 
+### Start WireMock
+```
+docker compose up -d
+```
+
 ## 2. System under test (SUT)
 ### 0. Naviger til riktig mappe
 ```
@@ -85,17 +90,13 @@ npm run test:cloud
 ```
 cd cucumber
 ```
-### 1. Start WireMock via Docker
-```
-docker compose up -d
-```
-### 2. Kjør tester
+### 1. Kjør tester
 
-#### 2a) Test med lokal instans av WireMock
+#### 1a) Test med lokal instans av WireMock
 ```
 npm run cucumber:local
 ```
-#### 2b) Test med sky-instans av WireMock
+#### 1b) Test med sky-instans av WireMock
 ```
 npm run cucumber:cloud
 ```

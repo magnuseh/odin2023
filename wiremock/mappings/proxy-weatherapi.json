@@ -1,0 +1,24 @@
+{
+  "mappings" : [ {
+    "id" : "b322ebf9-f2f1-4b71-95d8-1d8ff55b6c5b",
+    "name" : "Default proxy",
+    "request" : {
+      "urlPathPattern" : "/weatherapi/locationforecast/2.0/.*",
+      "method" : "ANY",
+      "pathParameters" : { },
+      "formParameters" : { }
+    },
+    "response" : {
+      "status" : 200,
+      "additionalProxyRequestHeaders" : { },
+      "proxyBaseUrl" : "https://api.met.no"
+    },
+    "uuid" : "b322ebf9-f2f1-4b71-95d8-1d8ff55b6c5b",
+    "persistent" : true,
+    "priority" : 10,
+    "postServeActions" : [ ]
+  } ],
+  "meta" : {
+    "total" : 1
+  }
+}

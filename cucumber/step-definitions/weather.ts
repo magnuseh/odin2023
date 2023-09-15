@@ -5,7 +5,7 @@ import wiremock from "./util/wiremock";
 import { IWireMockRequest, IWireMockResponse } from "wiremock-captain";
 
 After(async function() {
-    await wiremock.clearAll()
+    await wiremock.clearAllExceptDefault()
 })
 
 Given('at Yr returnerer OK ved henting av værdata for koordinater {int} {int}', async function (lat: number, lon: number) {

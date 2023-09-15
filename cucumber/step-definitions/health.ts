@@ -11,7 +11,7 @@ interface HealthStatus {
 }
 
 After(async function() {
-    await wiremock.clearAll()
+    await wiremock.clearAllExceptDefault()
 })
 
 Given('at applikasjonen kjører', function () {
