@@ -1,51 +1,48 @@
-I dette sporet vil du få se hvordan man kan spesifisere et systems oppførsel i scenario-format, og basert på dette bruke Cucumber til å implementere automatiserte tester og levende dokumentasjon.
-
-Du vil også få se noen eksempler på hvordan WireMock kan brukes både til å redusere avhengigheter og gi mer stabile tester, og for å enklere teste spesialtilfeller og feilscenarier.
-
 # Beskrivelse
+Kode tilkyttet foredrag "Cucumber kombinert med WireMock" på Testdagen Odin 2023:
 
-https://developer.yr.no/doc/GettingStarted/
+> I dette sporet vil du få se hvordan man kan spesifisere et systems oppførsel i scenario-format, og basert på dette bruke 
+> Cucumber til å implementere automatiserte tester og levende dokumentasjon.
+> Du vil også få se noen eksempler på hvordan WireMock kan brukes både til å redusere avhengigheter og gi mer stabile tester, og 
+> for å enklere teste spesialtilfeller og feilscenarier.
 
-## System under test (SUT)
+## System under test (SUT): `/sut`
 
-* Applikasjonsserver med HTTP REST-grensesnitt (TypeScript, NodeJS, Express)
+* Enkel, hjemmesnekret applikasjonsserver med HTTP REST-grensesnitt (TypeScript, NodeJS, Express)
 * Overordnet funksjonalitet:
-    * Hente værmelding fra yr.no (met.no) for en navngitt lokasjon
+    * Hente værmelding fra Yr (met.no) for en navngitt lokasjon
     * Legge til og fjerne lokasjoner
     * Ingen persistering/permanent lagring
 * API-endepunkter:
     * `GET /health` - Returner status OK så lenge applikasjonen er oppe
-    * `GET /health/yr` - Hent status fra yr.no og returner OK hvis svar
+    * `GET /health/yr` - Gjør helsesjekk av Yr sitt API og returner en status
     * `GET /locations` - List ut registrerte lokasjoner
     * `POST /locations` - Legg til en ny lokasjon
         * Format: `{ name: string, coordinates: { lat: float, lon: float } }`
     * `GET /locations/:name` - Hent en registrert lokasjon
     * `DELETE /locations/:name` - Slett en registrert lokasjon
     * `GET /weather/:locationName` - Hent en enkel værmelding for en registrert lokasjon
+* API-dokumentasjon fra Yr / met.no:
+    * https://developer.yr.no/doc/GettingStarted/
+    * https://api.met.no/weatherapi/locationforecast/2.0/documentation
 
-## Cucumber-tester
-* Legg til ugyldig posisjon
-* Fjern lokasjon som ikke finnes
-* Hent vær for ugyldig lokasjon
-* Hent vær for gyldig lokasjon
-* Feilhåndtering - feilkoder fra yr.no
-
-## WireMock
-* Mocke korrekt respons fra yr.no
-* Mocke feilrespons fra yr.no
-* HTTPS -- må håndtere self-signed sertifikat..
+## Cucumber-tester: `/cucumber`
+* Implementert som black-box systemtester mot REST-grensesnitt på SUT (TypeScript, CucumberJS, WireMock)
+* Noen utvalgte scenarier for de ulike API-endepunktene
+* Kompliserende faktor: Mocking av endepunkter over HTTPS
 
 # Kom i gang med koden
 
 ## 1. Forutsetninger / avhengigheter
 ### NPM / Node.js
-* Anbefaler å bruke [NVM](https://github.com/nvm-sh/nvm) til å installere og håndtere Node-versjoner
-* Koden er utviklet og testet med Node v20.4 (spesifisert i `.nvmrc`)
+Anbefaler å bruke [NVM](https://github.com/nvm-sh/nvm) til å installere og håndtere Node-versjoner.
 
-#### 0. Installere NVM
+Koden er utviklet og testet med Node v20.4 (spesifisert i `.nvmrc`).
 
-Følg instruksjoner på [https://github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm)
-#### 1. Sett riktig node-versjon
+#### Installér NVM
+Følg instruksjoner på https://github.com/nvm-sh/nvm.
+
+#### Sett riktig node-versjon
 Naviger inn i mappen med repoet og kjør følgende kommando for å installere Node-versjon fra `.nvmrc`:
 ```
 nvm install
@@ -54,6 +51,9 @@ Når riktig versjon er installert, kan man deretter velge gjør denne aktiv med 
 ```
 nvm use
 ```
+
+### Docker
+Følg instruksjoner på https://docs.docker.com/desktop/.
 
 ## 2. System under test (SUT)
 ### 0. Naviger til riktig mappe
@@ -87,7 +87,7 @@ cd cucumber
 ```
 ### 1. Start WireMock via Docker
 ```
-docker-compose up -d
+docker compose up -d
 ```
 ### 2. Kjør tester
 
