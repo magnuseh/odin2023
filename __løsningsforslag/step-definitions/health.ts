@@ -25,7 +25,9 @@ Given('at Yr returnerer status OK', async function () {
 })
 
 Given('at Yr ikke returnerer status OK', async function () {
-    return 'pending'
+    let mockRequest: IWireMockRequest = { method: 'GET', endpoint: WEATHER_API_STATUS_ENDPOINT }
+    let mockResponse: IWireMockResponse = { status: 500 }
+    await wiremock.register(mockRequest, mockResponse)
 })
 
 When('jeg kaller helsesjekk for applikasjonen', async function () {

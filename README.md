@@ -35,8 +35,7 @@ https://developer.yr.no/doc/GettingStarted/
 * Mocke feilrespons fra yr.no
 * HTTPS -- må håndtere self-signed sertifikat..
 
-
-# Kom i gang
+# Kom i gang med koden
 
 ## 1. Forutsetninger / avhengigheter
 ### NPM / Node.js
@@ -100,3 +99,25 @@ npm run cucumber:local
 ```
 npm run cucumber:cloud
 ```
+
+# Oppgaver
+## 1. Stegdefinisjon for helsesjekk
+Scenarioet "Applikasjonen skal gi status ikke OK hvis Yr ikke svarer OK på status" i `health.feature` har en stegdefinisjon som ikke er implementert.
+
+Finn og implementer dette steget.
+
+## 2. Scenario og stegdefinisjon for feil ved henting av værmelding
+Det finnes allerede et par scenarier for henting av værmelding for en gitt lokasjon, men dekningen er ikke god og bør utvides.
+
+Deloppgaver:
+1. Formulér et scenario der henting av værmelding fra Yr feiler
+2. Implementer eventuelle manglende stegdefinisjoner
+
+## 3. Scenarioer og stegdefinisjoner for ulike værtyper tjenesten kan returnere
+SUT returnerer tre ulike forenklede værmeldinger basert på værdataene som returneres fra met.no/yr.no.
+
+Deloppgaver:
+1. Formulér scenarier som dekker denne funksjonaliteten
+2. Implementer stegdefinisjoner med eventuelle mockdata nødvendig for automatisert, black-box systemtesting av dette
+
+Tips: Se `./sut/src/models/weather.ts` for definisjoner på de tre ulike værtypene.

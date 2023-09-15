@@ -37,6 +37,12 @@ Given('at Yr returnerer OK ved henting av værdata for koordinater {int} {int}',
     await wiremock.register(mockRequest, mockResponse)
 })
 
+Given('at Yr returnerer en feilkode ved henting av værdata for koordinater {int} {int}', async function (lat: number, lon: number) {
+    let mockRequest: IWireMockRequest = { method: 'GET', endpoint: `/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}` }
+    let mockResponse: IWireMockResponse = { status: 500 }
+    await wiremock.register(mockRequest, mockResponse)
+})
+
 When('jeg henter værmelding for {string}', async function(navn: string) {
     this.response = await getWeather(navn) as Response
 })
