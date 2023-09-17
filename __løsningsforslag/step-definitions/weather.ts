@@ -1,11 +1,11 @@
-import { Given, When, Then, After } from "@cucumber/cucumber"
+import { Given, When, Then, Before } from "@cucumber/cucumber"
 import { getWeather, Response } from "./api/sut"
 import { assert } from "chai"
 import wiremock from "./util/wiremock";
 import { IWireMockRequest, IWireMockResponse } from "wiremock-captain";
 
-After(async function() {
-    await wiremock.clearAll()
+Before(async function() {
+    await wiremock.clearAllExceptDefault()
 })
 
 Given('at Yr returnerer OK ved henting av værdata for koordinater {int} {int}', async function (lat: number, lon: number) {

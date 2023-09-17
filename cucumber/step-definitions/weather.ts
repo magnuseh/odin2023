@@ -1,10 +1,10 @@
-import { Given, When, Then, After } from "@cucumber/cucumber"
+import { Given, When, Then, Before } from "@cucumber/cucumber"
 import { getWeather, Response } from "./api/sut"
 import { assert } from "chai"
 import wiremock from "./util/wiremock";
 import { IWireMockRequest, IWireMockResponse } from "wiremock-captain";
 
-After(async function() {
+Before(async function() {
     await wiremock.clearAllExceptDefault()
 })
 
