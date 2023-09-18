@@ -26,10 +26,14 @@ Kode tilkyttet foredrag "Cucumber kombinert med WireMock" på Testdagen Odin 202
     * https://developer.yr.no/doc/GettingStarted/
     * https://api.met.no/weatherapi/locationforecast/2.0/documentation
 
-## Cucumber-tester: `/cucumber`
+## Cucumber-tester (TypeScript): `/cucumber`
 * Implementert som black-box systemtester mot REST-grensesnitt på SUT (TypeScript, CucumberJS, WireMock)
 * Noen utvalgte scenarier for de ulike API-endepunktene
 * Kompliserende faktor: Mocking av endepunkter over HTTPS
+
+## Cucumber-tester (Kotlin): `/cucumber-kotlin`
+* Implementert som black-box systemtester mot REST-grensesnitt på SUT (Kotlin, Cucumber-JVM, REST Assured, WireMock)
+* Ellers som over
 
 # Kom i gang med koden
 
@@ -85,13 +89,12 @@ npm run test:local
 npm run test:cloud
 ```
 
-## 3. Cucumber-tester
+## 3. Cucumber-tester (TypeScript)
 ### 0. Naviger til riktig mappe
 ```
 cd cucumber
 ```
 ### 1. Kjør tester
-
 #### 1a) Test med lokal instans av WireMock
 ```
 npm run cucumber:local
@@ -99,6 +102,22 @@ npm run cucumber:local
 #### 1b) Test med sky-instans av WireMock
 ```
 npm run cucumber:cloud
+```
+
+## 4. Cucumber-tester (Kotlin)
+### 0. Naviger til riktig mappe
+```
+cd cucumber-kotlin
+```
+### 1. Kjør tester
+#### 1a) Test med lokal instans av WireMock
+```
+./gradlew test
+```
+
+#### 1b) Test med sky-instans av WireMock
+```
+./gradlew test -Dwiremock.host=odin2023.wiremockapi.cloud -Dwiremock.port=443
 ```
 
 # Oppgaver
