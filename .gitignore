@@ -1,3 +1,6 @@
+cucumber-kotlin/target
+cucumber-kotlin/.gradle
+cucumber-kotlin/build
 cucumber/cucumber-report.html
 **/node_modules
 **/dist
