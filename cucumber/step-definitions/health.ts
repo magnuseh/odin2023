@@ -1,4 +1,4 @@
-import { Given, When, Then, Before } from "@cucumber/cucumber"
+import { Given, When, Then } from "@cucumber/cucumber"
 import { IWireMockRequest, IWireMockResponse } from 'wiremock-captain';
 import { getHealth, getYrHealth } from "./api/sut"
 import { assert } from "chai"
@@ -9,10 +9,6 @@ const WEATHER_API_STATUS_ENDPOINT = '/weatherapi/locationforecast/2.0/status'
 interface HealthStatus {
     status: string
 }
-
-Before(async function() {
-    await wiremock.clearAllExceptDefault()
-})
 
 Given('at applikasjonen kjører', function () {
     return true

@@ -8,7 +8,7 @@ import api.WireMock
 class Hooks: No {
     init {
         Before() { _ ->
-            WireMock.get().resetToDefaultMappings()
+            WireMock.get().removeMappings()
         }
     }
 }
