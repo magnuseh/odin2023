@@ -22,6 +22,9 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    listOf("wiremock.scheme", "wiremock.host", "wiremock.port").forEach { name ->
+        System.getProperty(name)?.let { systemProperties[name] = it }
+    }
 }
 
 kotlin {
