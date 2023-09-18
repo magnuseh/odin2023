@@ -20,16 +20,16 @@ class HealthStepDefs(private val world: World) : No {
         }
 
         Gitt("at Yr returnerer status OK") {
-            throw PendingException()
-        }
-
-        Gitt("at Yr ikke returnerer status OK") {
             world.wiremock.register(
                 get(WEATHER_API_STATUS_ENDPOINT)
                     .willReturn(
-                        status(500)
+                        okJson("{ \"last_update\": \"2023-09-11T20:43:10Z\" }")
                     )
             )
+        }
+
+        Gitt("at Yr ikke returnerer status OK") {
+            throw PendingException()
         }
 
         Når("jeg kaller helsesjekk for applikasjonen") {
