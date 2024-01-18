@@ -28,12 +28,14 @@ async function doRequest(url: string, reqParams: RequestInit,
 
     console.log('Response status:', responseStatus)
     let responseBody = undefined
-    try {
-        responseBody = await response.json()
-        //console.log('Response body:', JSON.stringify(responseBody, null, 4));
-    }
-    catch(e) {
-        console.log('Response body:', e)
+    if (reqParams.method !== 'DELETE') {
+        try {
+            responseBody = await response.json()
+            // console.log('Response body:', JSON.stringify(responseBody, null, 4));
+        }
+        catch(e) {
+            console.log('Response body:', e)
+        }
     }
     console.log('<---')
 
